@@ -22,30 +22,11 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
            0 0 0 0 1 1 0 0];
     L_1 = D_1 - A_1;
     
-    dt = 0.001; %or sample rate = 1/dt (Hz)
-    tMax = 10;
-    t = (0 : dt : tMax)';
-    norm_max_xcorr_mag = @(x,y)(max(abs(xcorr(x,y)))/(norm(x,2)*norm(y,2)));
-    neighbor_1 = randn(length(t), 1);
-    coin = rand;
-    if(coin >= 0.5)
-        neighbor_2 = randn(length(t), 1);
-    else
-        neighbor_2 = [zeros(2,1); 3.*neighbor_1(1:length(t)-4,:); 1;-2];
-    end       
-    signal_similarity = norm_max_xcorr_mag(neighbor_1,neighbor_2);
-    % if the neighbor fingerprints are similar, then signal_similarity will be close to 1 
-    spoof_flag = 0; % 1 - spoof detected, 0 - spoof not detected
-    if(signal_similarity >= spoof_threshold)
-        spoof_flag = 1;
-    else
-        spoof_flag = 0;
-    end
+    D_2 = D_1;
+    A_2 = A_1;
     
-    % After Detecting Spoofing Attack    
-    D_2 = D_1(1:end-1, 1:end-1); % Removing Spoofed Node
-    A_2 = A_1(1:end-1, 1:end-1); % Removing Spoofed Node 
-    L_2 = D_2 - A_2;
+    spoof_flag = 0; % 1 - spoof detected, 0 - spoof not detected
+    agent_similarity_counter = zeros(m,1);
     
     k = 1;
     while(k <= delay)
@@ -59,7 +40,8 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
                 before_sort = before_sort(:,1);  
                 
                 % NEW CODE - not to be written here!!!
-                before_sort = check_neighbor_fingerprints(i, m, before_sort, condition);
+                similar_agents = check_neighbor_fingerprints(m, spoof_threshold, condition);
+                agent_similarity_counter(similar_agents) = agent_similarity_counter(similar_agents) + 1;
                 % removing larger values - sort descendingly
                 ascend_sort = sortrows(before_sort, -1);              
                 indices = ascend_sort > x(i,(k));
@@ -93,6 +75,24 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
             end
         end
         k = k + 1;
+    end    
+    
+    % After Detecting Spoofing Attack  
+    malicious_indices = find(agent_similarity_counter~=0);
+    
+    if(malicious_indices)    
+        indices_to_remove = randperm(length(malicious_indices),length(malicious_indices)-F); % current algorithm tolerates upto F malicious agents in the network
+        indices_to_remove = sort(indices_to_remove,'descend');
+        spoof_flag = 1;
+
+        % remove the specified row and column from degree matrix and adjacency matrix
+        for index_to_remove = 1:length(indices_to_remove)        
+            D_2(index_to_remove,:) = [];
+            D_2(:,index_to_remove) = [];
+            A_2(index_to_remove,:) = [];
+            A_2(:,index_to_remove) = [];
+        end
+        L_2 = D_2 - A_2;    
     end
     
     % Spoof flag = 0 -> spoof not detected
