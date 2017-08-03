@@ -4,13 +4,13 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
 %according to W_MSR algorithm    
     
     time_vec = 0:1:time_span;
-    x = zeros(m, length(time_vec));
+    x = zeros(m, length(time_vec)+1);
     % Set values of all vehicles at time = 0 to x_0
     x(:,1) = x_0;   
     x(7,:) = 300;
     x(8,:) = 300;
     % Before Detecting Spoofing Attack
-    degree_vector_1 = [2 3 4 4 4 3 2 2];
+    degree_vector_1 = [2 3 4 4 5 4 2 2];
     D_1 = diag(degree_vector_1);
     A_1 = [0 1 1 0 0 0 0 0
            1 0 1 1 0 0 0 0
@@ -41,7 +41,9 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
                 
                 % NEW CODE - not to be written here!!!
                 similar_agents = check_neighbor_fingerprints(m, spoof_threshold, condition);
-                agent_similarity_counter(similar_agents) = agent_similarity_counter(similar_agents) + 1;
+                if(similar_agents)
+                    agent_similarity_counter(similar_agents) = agent_similarity_counter(similar_agents) + 1;
+                end
                 % removing larger values - sort descendingly
                 ascend_sort = sortrows(before_sort, -1);              
                 indices = ascend_sort > x(i,(k));
@@ -84,13 +86,14 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
         indices_to_remove = randperm(length(malicious_indices),length(malicious_indices)-F); % current algorithm tolerates upto F malicious agents in the network
         indices_to_remove = sort(indices_to_remove,'descend');
         spoof_flag = 1;
-
+        m = m - length(indices_to_remove);
         % remove the specified row and column from degree matrix and adjacency matrix
         for index_to_remove = 1:length(indices_to_remove)        
-            D_2(index_to_remove,:) = [];
-            D_2(:,index_to_remove) = [];
-            A_2(index_to_remove,:) = [];
-            A_2(:,index_to_remove) = [];
+            D_2(malicious_indices(index_to_remove),:) = [];
+            D_2(:,malicious_indices(index_to_remove)) = [];
+            A_2(malicious_indices(index_to_remove),:) = [];
+            A_2(:,malicious_indices(index_to_remove)) = [];
+            x(malicious_indices(index_to_remove),:) = [];
         end
         L_2 = D_2 - A_2;    
     end
@@ -140,12 +143,6 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
         k = k + 1;
     end
     
-    % After spoofing has been detected and spoofed node was removed from
-    % the network
-    if(spoof_flag == 1)
-        m = m - 1;
-        x(8,:) = []; % Removing spoofed node from the network
-    end
           
     % Spoof flag = 1 -> spoof detected and removed
     while(k <= length(time_vec) && k > delay && spoof_flag == 1)

@@ -11,8 +11,8 @@ repeats = 100; % Monte-carlo Simulation
 repeat_vec = 1:repeats;
 mean_x = zeros(repeats, 1);
 diff_mean = zeros(repeats, 1);
-delay = 5;
-spoof_threshold = 0.95;
+delay = 4;
+spoof_threshold = 0.90;
 x_0 = [50 51 52 53 54 55 300 300];
 legit_mean_x0 = mean(x_0(1:end-2));
 %%%%%%%%%%%%% Spoofing 1 Node %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -33,16 +33,16 @@ diff_mean_estimate = mean(diff_mean);
 % probability of spoofing attack being detected and mitigated using our
 % algorithm.
 
-figure;
-plot(repeat_vec, diff_mean);
-title('Difference Between MC Estimate & Initial Consensus vs Repetitions');
-xlabel('Spoofing Threshold');
-ylabel('Difference in Consensus Value');
-a = findobj(gcf, 'type', 'axes');
-h = findobj(gcf, 'type', 'line');
-set(h, 'linewidth', 5);
-set(a, 'linewidth', 4);
-set(a, 'FontSize', 24);
+% figure;
+% plot(repeat_vec, diff_mean);
+% title('Difference Between MC Estimate & Initial Consensus vs Repetitions');
+% xlabel('Spoofing Threshold');
+% ylabel('Difference in Consensus Value');
+% a = findobj(gcf, 'type', 'axes');
+% h = findobj(gcf, 'type', 'line');
+% set(h, 'linewidth', 5);
+% set(a, 'linewidth', 4);
+% set(a, 'FontSize', 24);
 
 figure;
 time_vec = 0:1:time_span+1;
@@ -58,7 +58,7 @@ set(h,'facealpha',0.1);
 title('Resilient Consensus using Spoof Resilient W-MSR Algorithm')
 xlabel('Time Steps');
 ylabel('Information states');
-ylim([20 320]);
+ylim([-20 320]);
 legend('Agent 1','Agent 2','Agent 3','Agent 4','Agent 5','Agent 6','Agent 7(Mal)', 'Legitimate Mean');
 a = findobj(gcf, 'type', 'axes');
 h = findobj(gcf, 'type', 'line');
