@@ -2,7 +2,7 @@ clear all; close all; clc;
 dt = 0.001; 
 tMax = 10;
 t = (0 : dt : tMax)';
-repeats = 1000;
+repeats = 1;
 % adding white noise
 snr_max = 10;
 signal_noise_ratio = 0:snr_max;

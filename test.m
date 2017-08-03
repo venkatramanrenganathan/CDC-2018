@@ -1,4 +1,4 @@
-function x = test(m, F, time_span, delay, spoof_threshold, x_0)
+function x = test(m, F, time_span, delay, spoof_threshold, snr, x_0)
 %Function test updates the information state of each
 %vehicles after sorting & removing extreme values from its in-neighbors
 %according to W_MSR algorithm    
@@ -40,7 +40,7 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
                 before_sort = before_sort(:,1);  
                 
                 % NEW CODE - not to be written here!!!
-                similar_agents = check_neighbor_fingerprints(m, spoof_threshold, condition);
+                similar_agents = check_neighbor_fingerprints(m, spoof_threshold, snr, condition);
                 if(similar_agents)
                     agent_similarity_counter(similar_agents) = agent_similarity_counter(similar_agents) + 1;
                 end
@@ -95,7 +95,7 @@ function x = test(m, F, time_span, delay, spoof_threshold, x_0)
             A_2(:,malicious_indices(index_to_remove)) = [];
             x(malicious_indices(index_to_remove),:) = [];
         end
-        L_2 = D_2 - A_2;    
+        L_2 = D_2 - A_2;    % L will be wrong along diagonal but no big deal here in this case!!!
     end
     
     % Spoof flag = 0 -> spoof not detected

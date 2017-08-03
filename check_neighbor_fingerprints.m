@@ -1,4 +1,4 @@
-function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, condition )
+function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, snr, condition )
 % funtion check_neighbor_fingerprints does a pairwise comparison of the 
 % spatial fingerprints of an agents' neighbors, finds similarities and
 % if needed removes the spoofed neighbor. 
@@ -13,7 +13,7 @@ function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, c
     % Simulating agents fingerprints as random signals
     agents_signal_fingerprints = randn(m, length(time)); 
     % Adding white noise to signal fingerprints
-    signal_to_noise_ratio = max_time; % we can vary this as a parameter too
+    signal_to_noise_ratio = snr; % we can vary this as a parameter too
     agents_signal_fingerprints = awgn(agents_signal_fingerprints,signal_to_noise_ratio,'measured');   
     number_vector = [1 2 3 4 5 6 7 8]';
     agents_signal_fingerprints = [number_vector agents_signal_fingerprints];
@@ -21,9 +21,11 @@ function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, c
     % m^{th} agent is spoofed by (m-1)^{th} agent 
     % So m^{th} agent's fingerprint looks like delayed and amplified fingerprint of (m-1)^{th} agent with some noise 
     % Following line adds delay of 2 seconds and scales by 3 times 
-    agents_signal_fingerprints(m,:) = [m, zeros(1,2), 3.*agents_signal_fingerprints(m-1, 2:length(time)-1)];    
+    agents_signal_fingerprints(m,:) = [m, zeros(1,2), 3.*agents_signal_fingerprints(m-1, 2:length(time)-1)];  
+    agents_signal_fingerprints(m,:) = awgn(agents_signal_fingerprints(m,:),signal_to_noise_ratio,'measured');
+    agents_signal_fingerprints(m,1:3) = [m, zeros(1,2)];
     % delete dummy !!!
-    dummy = check_signals_similarity(agents_signal_fingerprints(m-1,:), agents_signal_fingerprints(m,:));
+    dummy = check_signals_similarity(agents_signal_fingerprints(m-1,2:end), agents_signal_fingerprints(m,2:end));
     
      
     neighbor_fingerprints = agents_signal_fingerprints;
