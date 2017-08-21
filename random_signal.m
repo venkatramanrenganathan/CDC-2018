@@ -1,3 +1,4 @@
+% This matlab code is for simulating similarities between 2 random signals
 clear all; close all; clc;
 dt = 0.001; 
 tMax = 10;

@@ -1,7 +1,16 @@
-function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, snr, condition )
+function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, signal_to_noise_ratio, condition )
 % funtion check_neighbor_fingerprints does a pairwise comparison of the 
 % spatial fingerprints of an agents' neighbors, finds similarities and
 % if needed removes the spoofed neighbor. 
+%
+% INPUT
+% m - number of agents in total 
+% spoof_threshold - Threshold probaility to classify agent is spoofed/not
+% signal_to_noise_ratio - signal to noise ratio of white noise being added
+% condition - vector depicting which agents in Laplacian are in-neighbors
+% OUTPUT
+% similar_agents - vector holding indices of similar agents 
+%
 
     steps = 0.001;
     max_time = 10;
@@ -13,7 +22,7 @@ function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, s
     % Simulating agents fingerprints as random signals
     agents_signal_fingerprints = randn(m, length(time)); 
     % Adding white noise to signal fingerprints
-    signal_to_noise_ratio = snr; % we can vary this as a parameter too
+    signal_to_noise_ratio = signal_to_noise_ratio; % we can vary this as a parameter too
     agents_signal_fingerprints = awgn(agents_signal_fingerprints,signal_to_noise_ratio,'measured');   
     number_vector = [1 2 3 4 5 6 7 8]';
     agents_signal_fingerprints = [number_vector agents_signal_fingerprints];

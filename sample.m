@@ -1,3 +1,4 @@
+% THIS FILE IS JUST FOR PLAYING AROUND CODING BEFORE USING THEM
 % A = [1 2 3 4 5 6 7 8 9 10;1 2 3 2 4 3 5 6 2 7]';
 % u=unique(A);
 % d = u(histc(A,u) > 1);

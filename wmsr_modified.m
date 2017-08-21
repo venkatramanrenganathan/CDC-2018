@@ -1,7 +1,18 @@
 function x = wmsr_modified(m, F, spoof_count, time_span, delay, x_0)
 %Function wmsr_modified updates the information state of each
 %vehicles after sorting & removing extreme values from its in-neighbors
-%according to W_MSR algorithm    
+%according to W_MSR algorithm  
+%
+% INPUT 
+% m - number of agents in total 
+% F - number of malicious agents
+% spoof_count - number of spoofed agents
+% time_span - total time of execution
+% delay - time span within which the spoofing attack is simulated
+% x_0 - vector of initial value of all agents
+%
+% OUTPUT
+% x - vector of agent values indicating consensus
     
     time_vec = 0:1:time_span;
     x = zeros(m, length(time_vec));

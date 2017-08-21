@@ -2,6 +2,7 @@
 % W_MSR Code tackling the spoofing attack
 % Input initial conditions of node values
 % See the consensus converging despite having F malicious nodes
+% 2 cases demonstrated. Malicious node spoofs 1) 1 identity 2) 2 identites
 clear all; close all; clc;
 m = 8;
 F = 1;

@@ -1,7 +1,19 @@
-function x = spoof_resilient_wmsr(m, F, time_span, delay, spoof_threshold, snr, x_0)
+function x = spoof_resilient_wmsr(m, F, time_span, delay, spoof_threshold, signal_to_noise_ratio, x_0)
 %Function spoof_resilient_wmsr updates the information state of each
 %vehicles after sorting & removing extreme values from its in-neighbors
 %according to W_MSR algorithm    
+%
+% INPUT 
+% m - number of agents in total 
+% F - number of malicious agents
+% time_span - total time of execution
+% delay - time span within which the spoofing attack is simulated
+% spoof_threshold - Threshold probaility to classify agent is spoofed/not
+% signal_to_noise_ratio - signal to noise ratio of white noise being added
+% x_0 - vector of initial value of all agents
+% 
+% OUTPUT
+% x - vector of agent values indicating consensus
     
     time_vec = 0:1:time_span;
     x = zeros(m, length(time_vec)+1);
@@ -40,7 +52,7 @@ function x = spoof_resilient_wmsr(m, F, time_span, delay, spoof_threshold, snr, 
                 before_sort = before_sort(:,1);  
                 
                 % NEW CODE - not to be written here!!!
-                similar_agents = check_neighbor_fingerprints(m, spoof_threshold, snr, condition);
+                similar_agents = check_neighbor_fingerprints(m, spoof_threshold, signal_to_noise_ratio, condition);
                 if(similar_agents)
                     agent_similarity_counter(similar_agents) = agent_similarity_counter(similar_agents) + 1;
                 end
