@@ -21,7 +21,7 @@ for b = 1:length(threshold_vector)
     for c = 1:length(snr_vector)
         spoof_threshold = threshold_vector(b);  
         snr = snr_vector(c);
-        x_values = test(m, F, time_span, delay, spoof_threshold, snr, x_0);
+        x_values = spoof_resilient_wmsr(m, F, time_span, delay, spoof_threshold, snr, x_0);
         [x_row,x_col] = size(x_values);
         if(x_row == 8)
             mean_x = mean(x_values(1:end-2,end));

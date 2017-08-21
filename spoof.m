@@ -17,7 +17,7 @@ x_0 = [50 51 52 53 54 55 300 300];
 legit_mean_x0 = mean(x_0(1:end-2));
 %%%%%%%%%%%%% Spoofing 1 Node %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i = 1:repeats        
-    x = test(m, F, time_span, delay, spoof_threshold, x_0);
+    x = spoof_resilient_wmsr(m, F, time_span, delay, spoof_threshold, x_0);
     [x_row,x_col] = size(x);
     if(x_row == 8)
         mean_x(i) = mean(x(1:end-2,end));

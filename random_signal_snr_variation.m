@@ -27,6 +27,7 @@ set(gca, 'XLim', [0, snr_max])
 grid on
 xlabel('Signal To Noise Ratio')
 ylabel('Signal Similarity(%)')
+title('Signal Similarity vs Signal To Noise Ratio');
 set(gca, 'XLim', [0, snr_max])
 a = findobj(gcf, 'type', 'axes');
 h = findobj(gcf, 'type', 'line');
