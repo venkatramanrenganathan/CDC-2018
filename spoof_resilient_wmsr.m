@@ -92,20 +92,18 @@ function x = spoof_resilient_wmsr(m, F, time_span, delay, spoof_threshold, signa
     end    
     
     % After Detecting Spoofing Attack  
-    malicious_indices = find(agent_similarity_counter~=0);
-    
+    malicious_indices = find(agent_similarity_counter~=0);    
     if(malicious_indices)    
-        indices_to_remove = randperm(length(malicious_indices),length(malicious_indices)-F); % current algorithm tolerates upto F malicious agents in the network
-        indices_to_remove = sort(indices_to_remove,'descend');
+        indices_to_remove = sort(malicious_indices,'descend');
         spoof_flag = 1;
         m = m - length(indices_to_remove);
         % remove the specified row and column from degree matrix and adjacency matrix
         for index_to_remove = 1:length(indices_to_remove)        
-            D_2(malicious_indices(index_to_remove),:) = [];
-            D_2(:,malicious_indices(index_to_remove)) = [];
-            A_2(malicious_indices(index_to_remove),:) = [];
-            A_2(:,malicious_indices(index_to_remove)) = [];
-            x(malicious_indices(index_to_remove),:) = [];
+            D_2(indices_to_remove(index_to_remove),:) = [];
+            D_2(:,indices_to_remove(index_to_remove)) = [];
+            A_2(indices_to_remove(index_to_remove),:) = [];
+            A_2(:,indices_to_remove(index_to_remove)) = [];
+            x(indices_to_remove(index_to_remove),:) = [];
         end
         L_2 = D_2 - A_2;    % L will be wrong along diagonal but no big deal here in this case!!!
     end
