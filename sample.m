@@ -12,11 +12,14 @@
 % C = ismember(8, A(:,2))
 %A(condition,:) = [];
 
-A = [1 2 3 4 5 6 7 8 9 -1];
-B = [3 6 8 10];
-A(B) = A(B) + 1
-find(A~=0);
-indices = randperm(length(A),length(A)-1)
-C = A(indices)
-sort(C,'descend')
+% A = [1 2 3 4 5 6 7 8 9 -1];
+% B = [3 6 8 10];
+% A(B) = A(B) + 1
+% find(A~=0);
+% indices = randperm(length(A),length(A)-1)
+% C = A(indices)
+% sort(C,'descend')
 
+x = simplecluster_dataset;
+net = selforgmap([6 6]);
+net = train(net,x);
