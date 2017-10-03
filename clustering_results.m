@@ -14,9 +14,9 @@ function [ similar_cluster ] = clustering_results( m, agents_signal_fingerprints
 %
 %     similar_cluster = [];
     agents_signal_fingerprints = [];
-    angle_of_arrival = [240 160 260 90 290 20 330 325]';
-    reflected_arrival_angles = [210 140 245 115 300 35 320 330]';
-    first_amplitude = [10 40 50 25 65 75 55 55]';
+    angle_of_arrival = [240 160 285 90 290 20 330 325]';
+    reflected_arrival_angles = [210 140 295 115 300 35 320 330]';
+    first_amplitude = [10 40 58 25 60 75 55 55]';
     second_aplitude = 0.5*first_amplitude;
     a = 50;
     b = 100;
