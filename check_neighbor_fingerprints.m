@@ -34,7 +34,7 @@ function [ similar_agents ] = check_neighbor_fingerprints( m, spoof_threshold, s
     agents_signal_fingerprints(m,:) = awgn(agents_signal_fingerprints(m,:),signal_to_noise_ratio,'measured');
     agents_signal_fingerprints(m,1:3) = [m, zeros(1,2)];
     
-    similar_agents = clustering_results(m, agents_signal_fingerprints);   
+    similar_agents = clustering_results(m);   
      
     neighbor_fingerprints = agents_signal_fingerprints;
     % remove agents which aren't the neighbors of the agent i

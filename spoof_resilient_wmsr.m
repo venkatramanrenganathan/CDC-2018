@@ -52,7 +52,8 @@ function x = spoof_resilient_wmsr(m, F, time_span, delay, spoof_threshold, signa
                 before_sort = before_sort(:,1);  
                 
                 % NEW CODE - not to be written here!!!
-                similar_agents = check_neighbor_fingerprints(m, spoof_threshold, signal_to_noise_ratio, condition);
+                %similar_agents = check_neighbor_fingerprints(m, spoof_threshold, signal_to_noise_ratio, condition);
+                similar_agents = clustering_results(i,m);
                 if(similar_agents)
                     agent_similarity_counter(similar_agents) = agent_similarity_counter(similar_agents) + 1;
                 end
